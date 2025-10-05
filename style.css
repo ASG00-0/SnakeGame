@@ -1,0 +1,15 @@
+body {
+  background-color: #0f0f0f;
+  color: #ffa500;
+  font-family: "Poppins", sans-serif;
+  text-align: center;
+  margin-top: 30px;
+}
+
+canvas {
+  background-color: #111;
+  border: 2px solid #ffa500;
+  display: block;
+  margin: 20px auto;
+  box-shadow: 0 0 15px #ffa50055;
+}
