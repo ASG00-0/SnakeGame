@@ -1,9 +1,13 @@
 body {
   background-color: #0f0f0f;
   color: #ffa500;
-  font-family: "Poppins", sans-serif;
+  font-family: "Press Start 2P", monospace;
   text-align: center;
   margin-top: 30px;
+}
+
+#score {
+  font-size: 14px;
 }
 
 canvas {
