@@ -1,20 +1,42 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
-
 const box = 20;
-let snake = [{ x: 9 * box, y: 10 * box }];
-let direction = "RIGHT";
-let food = {
-  x: Math.floor(Math.random() * 19) * box,
-  y: Math.floor(Math.random() * 19) * box,
-};
-let score = 0;
 
+let snake;
+let direction;
+let food;
+let score;
+let game; 
+let gameStarted = false; 
+
+
+function initGame() {
+  snake = [{ x: 9 * box, y: 10 * box }];
+  direction = null; 
+  food = {
+    x: Math.floor(Math.random() * 19) * box,
+    y: Math.floor(Math.random() * 19) * box,
+  };
+  score = 0;
+  document.getElementById("score").textContent = "Score: " + score;
+  gameStarted = false;
+  clearInterval(game); 
+  draw(); 
+}
+
+// Handle arrow key input
 document.addEventListener("keydown", (event) => {
-  if (event.key === "ArrowLeft" && direction !== "RIGHT") direction = "LEFT";
-  if (event.key === "ArrowUp" && direction !== "DOWN") direction = "UP";
-  if (event.key === "ArrowRight" && direction !== "LEFT") direction = "RIGHT";
-  if (event.key === "ArrowDown" && direction !== "UP") direction = "DOWN";
+  const key = event.key;
+
+    if (!gameStarted && ["ArrowLeft","ArrowUp","ArrowRight","ArrowDown"].includes(key)) {
+    gameStarted = true;
+    game = setInterval(draw, 100); 
+  }
+
+  if (key === "ArrowLeft" && direction !== "RIGHT") direction = "LEFT";
+  if (key === "ArrowUp" && direction !== "DOWN") direction = "UP";
+  if (key === "ArrowRight" && direction !== "LEFT") direction = "RIGHT";
+  if (key === "ArrowDown" && direction !== "UP") direction = "DOWN";
 });
 
 function draw() {
@@ -28,6 +50,8 @@ function draw() {
 
   ctx.fillStyle = "#00ff00";
   ctx.fillRect(food.x, food.y, box, box);
+
+  if (!direction) return; 
 
   let headX = snake[0].x;
   let headY = snake[0].y;
@@ -57,11 +81,12 @@ function draw() {
     headY >= canvas.height ||
     snake.some((s) => s.x === newHead.x && s.y === newHead.y)
   ) {
-    clearInterval(game);
     alert("Game Over! Your score: " + score);
+    initGame(); 
+    return;
   }
 
   snake.unshift(newHead);
 }
 
-const game = setInterval(draw, 100);
+initGame();
